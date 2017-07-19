@@ -16,102 +16,43 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class ResponseBaseDto<T> {
-    private HttpStatus status;
-    private String message;
+    private Status status;
     private T response;
     private LocalDateTime responseAt;
 
-    public static <T> ResponseBaseDto to(final HttpStatus status, final String message, final T t) {
+    public static <T> ResponseBaseDto build(final Status status, final T t) {
         return ResponseBaseDto.builder()
                 .status(status)
-                .message(message)
                 .response(t)
                 .responseAt(LocalDateTime.now())
                 .build();
-    }
-
-    public static <T> ResponseEntity response(final HttpStatus status, final String message, final T t) {
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(status)
-                .message(message)
-                .response(t)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, status);
-    }
-
-    public static <T> ResponseEntity created(final String message, final T t) {
-        HttpStatus httpStatus = HttpStatus.CREATED;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message(message)
-                .response(t)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
     }
 
     public static <T> ResponseEntity created(final T t) {
-        HttpStatus httpStatus = HttpStatus.CREATED;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message("")
-                .response(t)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
-    }
-
-    public static <T> ResponseEntity ok(final String message, final T t) {
-        HttpStatus httpStatus = HttpStatus.OK;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message(message)
-                .response(t)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
+        return new ResponseEntity<>(ResponseBaseDto.build(Status.OK, t), HttpStatus.CREATED);
     }
 
     public static <T> ResponseEntity ok(final T t) {
-        HttpStatus httpStatus = HttpStatus.OK;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message("")
-                .response(t)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
+        return ResponseEntity.ok(ResponseBaseDto.build(Status.OK, t));
     }
 
-    public static <T> ResponseEntity ok() {
-        HttpStatus httpStatus = HttpStatus.OK;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message("")
-                .response(null)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
+    public static ResponseEntity ok() {
+        return ResponseEntity.ok(ResponseBaseDto.build(Status.OK, null));
     }
 
-    public static ResponseEntity serviceError(final String message) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message(message)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
+    public static <T> ResponseEntity serviceError(final T t) {
+        return ResponseEntity.badRequest().body(ResponseBaseDto.build(Status.FAIL, t));
     }
 
-    public static ResponseEntity internalServerError(final String message) {
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        ResponseBaseDto dto = ResponseBaseDto.builder()
-                .status(httpStatus)
-                .message(message)
-                .responseAt(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(dto, httpStatus);
+    public static <T> ResponseEntity internalServerError(final T t) {
+        return new ResponseEntity<>(ResponseBaseDto.build(Status.FAIL, t), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static <T> ResponseEntity badRequest(final T t) {
+        return ResponseEntity.badRequest().body(ResponseBaseDto.build(Status.FAIL, t));
+    }
+
+    public enum Status {
+        OK, FAIL
     }
 }

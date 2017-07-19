@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.weproud.config.interceptor.UserSessionStorage;
 import com.weproud.config.logback.TelegramSender;
 import com.weproud.dto.ResponseBaseDto;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -47,6 +51,18 @@ public class ExceptionHandlerAdvice {
         return ResponseBaseDto.internalServerError(e.getMessage());
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException manve) {
+        FieldError fieldError = manve.getBindingResult().getFieldError();
+        return ResponseBaseDto.badRequest(
+                MethodArgumentNotValidExceptionMessage.builder()
+                        .field(fieldError.getField())
+                        .rejectedValue(fieldError.getRejectedValue())
+                        .defaultMessage(fieldError.getDefaultMessage())
+                        .build()
+        );
+    }
+
     private TelegramSender.ExceptionMessage getExceptionMessage(final HttpServletRequest request, final Exception e) throws UnsupportedEncodingException {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
@@ -62,5 +78,12 @@ public class ExceptionHandlerAdvice {
                 .build();
     }
 
+    @Getter
+    @Builder
+    public static class MethodArgumentNotValidExceptionMessage {
+        private String field;
+        private Object rejectedValue;
+        private String defaultMessage;
+    }
 
 }
