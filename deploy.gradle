@@ -1,0 +1,28 @@
+ssh.settings {
+    knownHosts = allowAnyHosts
+    dryRun = project.hasProperty('dryRun')
+    pty = true
+}
+
+remotes {
+    dev {
+        host = '<your-host>'
+        port = 22
+        user = 'deploy'
+        identity = file('~/.ssh/id_rsa')
+    }
+}
+
+task deployDev(dependsOn: assemble) {
+    doLast {
+        ssh.run {
+            session(remotes.dev) {
+                println '-- deploy: ' + jar.archiveName + " to " + remotes.dev.host
+                put from: jar.archivePath.absolutePath, into: '/api/deploy'
+                execute 'mv /api/current.jar /api/current.backup.jar'
+                execute 'ln -s /api/deploy/' + jar.archiveName + ' /api/current.jar'
+                execute 'ls -al /tok'
+            }
+        }
+    }
+}

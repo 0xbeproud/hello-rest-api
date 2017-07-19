@@ -1,0 +1,16 @@
+---
+server:
+  port: 8777
+  context-path: /rest
+
+management:
+  security:
+    enabled: false
+
+telegram:
+  bot-token: <your-bot-token>
+  chat-id: <your-chat-id>
+
+
+
+
