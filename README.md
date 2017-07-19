@@ -3,8 +3,10 @@
  
 
 ## spring boot 1.5.4.RELEASE
+- spring-boot-data-jpa
 - undertow
-- spring data jpa
 - hikari-cp 2.6.3
 - swagger 2.7
 - log4jdbc-log4j2-jdbc4.1 1.16
+
+- Send telegram when Exception occurred.
