@@ -1,6 +1,6 @@
 ---
 server:
-  port: 8777
+  port: 8770
   context-path: /rest
 
 management:

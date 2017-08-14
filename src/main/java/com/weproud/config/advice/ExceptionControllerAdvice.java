@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 @ControllerAdvice
 @Slf4j
-public class ExceptionHandlerAdvice {
+public class ExceptionControllerAdvice {
 
     @Autowired
     private Environment environment;
@@ -52,7 +52,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException manve) {
+    public ResponseEntity methodArgumentNotValidException(MethodArgumentNotValidException manve) {
         FieldError fieldError = manve.getBindingResult().getFieldError();
         return ResponseBaseDto.badRequest(
                 MethodArgumentNotValidExceptionMessage.builder()

@@ -21,13 +21,13 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component
-public class HttpInterceptor extends HandlerInterceptorAdapter {
+public class ApiHttpInterceptor extends HandlerInterceptorAdapter {
     private final TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
 
     @Autowired
     private UserSessionStorage storage;
 
-    public HttpInterceptor() {
+    public ApiHttpInterceptor() {
         super();
         log.info("HttpInterceptor() 생성");
     }

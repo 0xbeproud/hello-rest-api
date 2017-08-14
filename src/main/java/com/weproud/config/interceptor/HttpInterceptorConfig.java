@@ -12,11 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class HttpInterceptorConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private HttpInterceptor httpInterceptor;
+    private ApiHttpInterceptor apiHttpInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(httpInterceptor)
+        registry.addInterceptor(apiHttpInterceptor)
                 .addPathPatterns("/**");
     }
 }

@@ -8,10 +8,10 @@ spring:
     show-sql: true
   datasource:
     hikari:
-      jdbc-url: jdbc:log4jdbc:mysql://<your-db>:3306/<yours>?useUnicode=true&charaterEncoding=utf-8
+      jdbc-url: jdbc:log4jdbc:mysql://127.0.0.1:3306/hello?useUnicode=true&charaterEncoding=utf-8
       driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      username: <your-username>
-      password: <your-password>
+      username: test
+      password: test
       maximum-pool-size: 5
       pool-name: hikari-cp
       connection-test-query: select 1
