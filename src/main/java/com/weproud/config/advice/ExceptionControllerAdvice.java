@@ -1,7 +1,7 @@
 package com.weproud.config.advice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.weproud.config.interceptor.UserSessionStorage;
+import com.weproud.config.UserSessionStorage;
 import com.weproud.config.logback.TelegramSender;
 import com.weproud.dto.ResponseBaseDto;
 import com.weproud.exception.ServiceException;

@@ -1,4 +1,4 @@
-package com.weproud.config.interceptor;
+package com.weproud.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

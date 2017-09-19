@@ -1,6 +1,6 @@
 package com.weproud.config.aspect;
 
-import com.weproud.config.interceptor.UserSessionStorage;
+import com.weproud.config.UserSessionStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
