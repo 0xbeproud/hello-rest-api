@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.weproud.config.interceptor.UserSessionStorage;
 import com.weproud.config.logback.TelegramSender;
 import com.weproud.dto.ResponseBaseDto;
+import com.weproud.exception.ServiceException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity handleServiceException(HttpServletRequest request, ServiceException e) throws InterruptedException, ExecutionException, JsonProcessingException, UnsupportedEncodingException {
 
-        return ResponseBaseDto.serviceError(e.getMessage());
+        return ResponseBaseDto.serviceError(e);
     }
 
     @ExceptionHandler(value = Exception.class)

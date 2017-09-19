@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Component
 public class ApiHttpInterceptor extends HandlerInterceptorAdapter {
+    public static final String HTTP_USER_AGENT = "User-Agent";
     private final TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
 
     @Autowired
@@ -36,22 +37,27 @@ public class ApiHttpInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
+        log.info("-- request header User-Agent: {}", request.getHeader("User-Agent"));
+
         String method = request.getMethod();
         String requestPath = request.getContextPath() + request.getServletPath();
         String ip = getRequestIpAddress(request);
         String requestId = uuidGenerator.generate().toString();
+        String userAgent = request.getHeader(HTTP_USER_AGENT);
         log.info("---- preHandle[{}] {} {}", requestId, method, requestPath);
 
         this.storage.setRequestId(requestId);
         this.storage.setMethod(method);
         this.storage.setRequestPath(requestPath);
         this.storage.setIp(ip);
+        this.storage.setUserAgent(userAgent);
         this.storage.setRequestDateTime(LocalDateTime.now());
 
         MDC.clear();
         MDC.put("request_id", this.storage.getRequestId());
         MDC.put("request_method", this.storage.getMethod());
         MDC.put("request_path", this.storage.getRequestPath());
+        MDC.put("user_agent", this.storage.getUserAgent());
         MDC.put("client_ip", this.storage.getIp());
         return true;
     }

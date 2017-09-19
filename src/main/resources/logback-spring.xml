@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <jmxConfigurator/>
+
+    <springProfile name="dev">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    </springProfile>
+
+    <appender name="SIZE_AND_TIME_BASED_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/webapi.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/webapi-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most <maxFileSize> MB,
+            keep <maxHistory> days worth of history,
+            but at most <totalSizeCap> -->
+            <maxHistory>3</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <root level="INFO">
+        <springProfile name="dev">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+        <springProfile name="beta">
+            <appender-ref ref="TELEGRAM"/>
+            <appender-ref ref="SIZE_AND_TIME_BASED_FILE"/>
+        </springProfile>
+        <springProfile name="live, third">
+            <appender-ref ref="TELEGRAM"/>
+            <appender-ref ref="SIZE_AND_TIME_BASED_FILE"/>
+        </springProfile>
+    </root>
+</configuration>

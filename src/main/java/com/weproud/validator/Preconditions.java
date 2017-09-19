@@ -6,6 +6,8 @@ import com.weproud.exception.ServiceException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -51,5 +53,15 @@ public final class Preconditions {
         if (Arrays.stream(enumClass.getEnumConstants()).noneMatch(e -> e.name().equals(value)))
             throw new ServiceException("ValueNotContainsEnumError", String.format("\'%s\'는 잘못된 값 입니다.", value));
         return Enum.valueOf(enumClass, value);
+    }
+
+    public static <T> void withPredicate(final Predicate<T> predicate, T t, final Supplier<? extends Exception> exception) throws Exception {
+        if (predicate.test(t))
+            throw exception.get();
+    }
+
+    public static <T, U> void withBiPredicate(final BiPredicate<T, U> predicate, T t, U u, final Supplier<? extends Exception> exception) throws Exception {
+        if (predicate.test(t, u))
+            throw exception.get();
     }
 }
