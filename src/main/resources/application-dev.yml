@@ -22,10 +22,10 @@ logging:
   file: logs/application.log
   level:
     jdbc.sqlonly: info
-    jdbc.sqltiming: info
+    jdbc.sqltiming: off
     jdbc.audit: off
-    jdbc.resultset: info
-    jdbc.resultsettable: info
+    jdbc.resultset: off
+    jdbc.resultsettable: off
     jdbc.connection: off
     org.springframework: info
     org.springframework.jdbc: info

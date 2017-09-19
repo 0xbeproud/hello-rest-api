@@ -24,17 +24,11 @@
         </encoder>
     </appender>
 
-
     <root level="INFO">
         <springProfile name="dev">
             <appender-ref ref="CONSOLE"/>
         </springProfile>
-        <springProfile name="beta">
-            <appender-ref ref="TELEGRAM"/>
-            <appender-ref ref="SIZE_AND_TIME_BASED_FILE"/>
-        </springProfile>
-        <springProfile name="live, third">
-            <appender-ref ref="TELEGRAM"/>
+        <springProfile name="prod">
             <appender-ref ref="SIZE_AND_TIME_BASED_FILE"/>
         </springProfile>
     </root>

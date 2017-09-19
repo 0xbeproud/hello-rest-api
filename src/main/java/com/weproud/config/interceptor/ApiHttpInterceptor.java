@@ -4,7 +4,6 @@ import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -37,14 +36,14 @@ public class ApiHttpInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        log.info("-- request header User-Agent: {}", request.getHeader("User-Agent"));
+//        log.info("-- request header User-Agent: {}", request.getHeader("User-Agent"));
 
         String method = request.getMethod();
         String requestPath = request.getContextPath() + request.getServletPath();
         String ip = getRequestIpAddress(request);
         String requestId = uuidGenerator.generate().toString();
         String userAgent = request.getHeader(HTTP_USER_AGENT);
-        log.info("---- preHandle[{}] {} {}", requestId, method, requestPath);
+//        log.info("---- preHandle[{}] {} {}", requestId, method, requestPath);
 
         this.storage.setRequestId(requestId);
         this.storage.setMethod(method);
@@ -53,21 +52,14 @@ public class ApiHttpInterceptor extends HandlerInterceptorAdapter {
         this.storage.setUserAgent(userAgent);
         this.storage.setRequestDateTime(LocalDateTime.now());
 
-        MDC.clear();
-        MDC.put("request_id", this.storage.getRequestId());
-        MDC.put("request_method", this.storage.getMethod());
-        MDC.put("request_path", this.storage.getRequestPath());
-        MDC.put("user_agent", this.storage.getUserAgent());
-        MDC.put("client_ip", this.storage.getIp());
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response,
-                           Object handler, 
+                           Object handler,
                            ModelAndView modelAndView) throws Exception {
-        MDC.clear();
     }
 
     public String getRequestIpAddress(HttpServletRequest request) {
