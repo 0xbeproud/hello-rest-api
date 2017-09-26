@@ -1,5 +1,8 @@
 ---
 spring:
+  mobile:
+    devicedelegatingviewresolver:
+      enabled: true
   jpa:
     database: mysql
     generate-ddl: false
