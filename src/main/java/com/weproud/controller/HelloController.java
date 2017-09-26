@@ -65,6 +65,7 @@ public class HelloController {
         return ResponseBaseDto.ok();
     }
 
+
     @Getter
     public static class CreateHelloRequest {
         @NotBlank

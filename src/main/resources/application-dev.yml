@@ -22,17 +22,25 @@ spring:
       connection-test-query: select 1
 
 logging:
-  file: logs/application.log
   level:
-    jdbc.sqlonly: info
-    jdbc.sqltiming: off
-    jdbc.audit: off
-    jdbc.resultset: off
-    jdbc.resultsettable: off
-    jdbc.connection: off
-    org.springframework: info
-    org.springframework.jdbc: info
-    com.quiztok: debug
+    jdbc:
+      sqltiming: info
+      audit: 'off'
+      connection: 'off'
+      resultset: 'off'
+      resultsettable: info
+      sqlonly: 'off'
+    org.springframework:
+      web: 'off'
+      boot: info
+      data: 'off'
+      jmx: 'off'
+      beans: 'off'
+      cache: debug
+    springfox.documentation: 'off'
+    com.zaxxer.hikari: 'off'
+    com.github.ben-manes: debug
+    com.weproud: debug
 
 
 
